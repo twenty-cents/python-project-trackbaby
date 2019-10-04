@@ -1,3 +1,13 @@
+#######################################################################################
+# Nom du script : nourrisson2-110.py
+# Version       : 1.0
+# Créé le       : 04/10/19 par Vincent 
+# 
+#######################################################################################
+# Version 110 lignes, obtenue insidieusement par suppression sauvage des
+# commentaires
+#######################################################################################
+
 import matplotlib.pyplot as plt
 import numpy as np
 import csv

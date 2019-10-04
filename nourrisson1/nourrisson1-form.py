@@ -1,99 +1,109 @@
 #######################################################################################
-# Nom du script : nourrisson1.py
+# Nom du script : nourrisson1-form.py
 # Version       : 1.0
-# Créé le       : 02/10/19 par Vincent 
+# Créé le       : 04/10/19 par Vincent 
 # 
 #######################################################################################
+# Version améliorée du script nourrisson1.py avec affichage d'une fenêtre de saisie
+# pour saisir les données suivantes du nourrisson :
+# - genre
+# - poids
+# - taille
+# - périmètre crânien
+#
+#######################################################################################
+# TODO : La gestion de la fermeture par la croix de la fenêtre n'entraine pas 
+#        l'arrêt du script
+#
+# Bug : la fenêtre ne ferme pas 
+#       Lors de l'appui sur le bouton VALIDER, les contrôles sont déchargés de la 
+#       fenêtre, mais celle-ci reste ouverte
 #
 #######################################################################################
 
 # Données de références nourrisson
 import nourrisson1_donnees
+# Pour gérer la sortie du script
+import sys
+# Pour gérer le formulaire de saisie
+import pyforms 
+from pyforms.basewidget import BaseWidget
+from pyforms.controls import ControlText
+from pyforms.controls import ControlButton
+from pyforms.controls import ControlCombo
+from pyforms.controls import ControlSlider
+from pyforms.controls import ControlNumber
 
-genre_denomination = ""
+# Classe Formulaire de saisie
+class SaisieGenreForm(BaseWidget):
+
+    top_ok = False
+
+    def __init__(self, *args, **kwargs):
+        super().__init__('Suivi nourrisson Step 3')
+
+        #Definition of the forms fields
+        self._genrecbx = ControlCombo('Genre')
+        self._ageslider = ControlSlider('Age (en mois)')
+        self._poidstext = ControlNumber('Poids (en kg)')
+        self._tailletext = ControlNumber('Taille (en cm)')
+        self._perimetrecranientext = ControlNumber('Périmètre crânien (en cm)')
+        self._runbutton     = ControlButton('Vérifier les constantes')
+
+        # Initialisation de la combo box Genre
+        self._genrecbx.add_item('Garçon', 'g')
+        self._genrecbx.add_item('Fille', 'f')
+
+        # Initialisation du slider Age
+        self._ageslider.min = 0
+        self._ageslider.max = 60
+
+        # Initialisation de la saisie du poids
+        self._poidstext.min = 0
+        self._poidstext.step = .1
+        self._poidstext.decimals = 1
+
+        # Initialisation de la saisie de la taille
+        self._tailletext.min = 0
+        self._tailletext.step = .1
+        self._tailletext.decimals = 1
+
+        # Initialisation de la saisie du périmètre crânien
+        self._perimetrecranientext.min = 0
+        self._perimetrecranientext.step = .1
+        self._perimetrecranientext.decimals = 1
+
+        # Ajout du callback quand le bouton de validation est pressé
+        self._runbutton.value = self.__runEvent
+
+        # Ajout des contrôles dans le formulaire
+        self._formset = [
+            '_genrecbx',
+            '_ageslider',
+            '_poidstext',
+            '_tailletext',
+            '_perimetrecranientext',
+            '_runbutton'
+        ]
+
+    def __runEvent(self):
+        # Bug : la fenêtre ne ferme pas
+        # Les contrôles sont déchargés de la fenêtre, mais la fenêtre reste ouverte
+        self.close()
+
+# ------------------------------------------------------------------------------------------------
+# Exécution de la fenêtre de saisie des données du nourrisson
+# Etape 1 - 
+# ------------------------------------------------------------------------------------------------
+if __name__ == '__main__':
+
+    from pyforms import start_app
+    frame = start_app(SaisieGenreForm, geometry=(200, 200, 400, 400) )
 
 # ------------------------------------------------------------------------------------------------
 # Fonctions du script
 # ------------------------------------------------------------------------------------------------
-# Tester si une entrée est un float
-def is_float_positif(f):
-    try:
-        n = float(f)
-        if n >= 0:
-            return True
-        else:
-            return False
-    except:
-        return False
-
-# Tester si une entrée est un int
-def is_integer_positif(f):
-    try:
-        n = int(f)
-        if n >= 0:
-            return True
-        else:
-            return False
-    except:
-        return False
-
-# Sasie du genre
-def saisir_genre():
-    genre = ""
-    while not (genre == "f" or genre == "g"):
-        genre = input("Entrez le genre de votre nourrisson ('g' pour garçon, 'f' pour fille) :")
-        if not (genre == "f" or genre == "g"):
-            print("Saisie incorrecte, essaie encore...")
-            genre = ""
-    return genre
-
-# Sasie de l'âge
-def saisir_age():
-    age = -1
-    while not(is_integer_positif(age) == True):
-        age = input("Veuillez entrer l'âge de votre nourrisson en mois (entre 0 et 60 mois) : ")
-        if is_integer_positif(age) == False or (is_integer_positif(age) == True and int(age) > 60):
-            print("Saisie incorrecte, essaie encore...")
-            age = -1
-        else:
-            age = int(age)
-    return age
-
-# Saisir le poids
-def saisir_poids():
-    poids = -1
-    while is_float_positif(poids) == False:
-        poids = input("Veuillez entrer le poids de votre nourrisson en kg : ")
-        if is_float_positif(poids) == False:
-            print("Saisie incorrecte, essaie encore...")
-            poids = -1
-        else:
-            poids = float(poids)
-    return poids
-
-# Saisir la taille
-def saisir_taille():
-    taille = -1
-    while is_float_positif(taille) == False:
-        taille = input("Veuillez entrer la taille de votre nourrisson en cm : ")
-        if is_float_positif(taille) == False:
-            print("Saisie incorrecte, essaie encore...")
-            taille = -1
-        else:
-            taille = float(taille)
-    return taille
-
-# Saisir le périmètre cranien
-def saisir_perimetre_cranien():
-    perimetre_cranien = -1
-    while is_float_positif(perimetre_cranien) == False:
-        perimetre_cranien = input("Veuillez entrer le périmètre cranien de votre nourrisson en cm : ")
-        if is_float_positif(perimetre_cranien) == False:
-            print("Saisie incorrecte, essaie encore...")
-            perimetre_cranien = -1
-        else:
-            perimetre_cranien = float(perimetre_cranien)
-    return perimetre_cranien
+genre_denomination = ""
 
 # Récupérer le poids minimum selon le genre
 def recupere_poids_min(genre, age):
@@ -186,15 +196,17 @@ def affiche_rapport_perimetre_cranien(genre, age, perimetre_cranien, perimetre_c
 
 
 # ------------------------------------------------------------------------------------------------
-# Point d'entrée du script
+# Exécution du script
+# Etape 2 
+# Processus d'analyse des résultats
 # ------------------------------------------------------------------------------------------------
 print("Bienvenue dans ce programme de vérification des constantes de votre nourrisson !")
 # Saisie des entrées clavier
-genre             = saisir_genre()
-age               = saisir_age()
-poids             = saisir_poids()
-taille            = saisir_taille()
-perimetre_cranien = saisir_perimetre_cranien()
+genre             = frame.controls.get('_genrecbx').value
+age               = frame.controls.get('_ageslider').value
+poids             = frame.controls.get('_poidstext').value
+taille            = frame.controls.get('_tailletext').value
+perimetre_cranien = frame.controls.get('_perimetrecranientext').value
 
 # récupération des bornes selon le genre et l'âge
 poids_min             = recupere_poids_min(genre, age)
