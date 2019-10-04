@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 # csv pour lire les fichiers de données
 import csv
-
 # Tables des mesures
 mesures_age = []
 mesures_poids = []
