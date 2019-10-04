@@ -27,15 +27,9 @@ On supposera pour le script 2 que les fichiers contenant les valeurs de référe
 --------------------------
 
 **Script 1 :** Le résultat affiché en console est conforme à l'exemple donné sur le repository github.
-
 **Script 1 :** Les entrées utilisateur•ice sont validées (par exemple lorsqu'on demande un poids, on attendra une valeur décimale, pas du texte).
-
 **Script 2 :** Les 3 graphiques sont affichées dans la même figure.
-
 **Script 2 :** Le fichier de mesure ne comporte pas forcément une mesure pour chaque mois et cela ne doit pas entraver l'affichage.
-
 **Script 2 :** Le code source ne doit pas excéder 200 lignes.
-
 **Script 2 (bonus) :** Le code source fait moins de 110 lignes.
 
-Crédit photo : Luke Chesser on Unsplash
